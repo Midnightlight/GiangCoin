@@ -3,7 +3,6 @@ The purpose of this project is to explain and simulate how the cryptocurrency wo
 
 
 1. Creating the blockchain
-![Screenshot 1](https://github.com/Midnightlight/GiangCoin/raw/master/Screenshot-1.png)
 
 2. Add Proof-of-Work implementation to secure blockchain
 Note: In Bitcoin's case, Proof-of-Work algorithm makes sure that there is only one block created every 10 minutes.
