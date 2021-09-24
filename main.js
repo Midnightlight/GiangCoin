@@ -1,21 +1,27 @@
 const SHA256 = require('crypto-js/sha256');  // install library in terminal: npm istall--save crypto - js
 
+class Transaction {
+    constructor(fromAddress, toAddress, amount) {
+        this.fromAddress = fromAddress;
+        this.toAddress = toAddress;
+        this.amount = amount;
+    }
+}
+
 class Block {
-    constructor(index, timestamp, data, previousHash = '') {
-        this.index = index;
+    constructor(timestamp, transactions, previousHash = '') {
         this.timestamp = timestamp;
-        this.data = data;
+        this.transactions = transactions;
         this.previousHash = previousHash;
         this.hash = this.calculateHash();
         this.nonce = 0;
     }
 
     calculateHash() {
-        return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce).toString();
+        return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).toString();
     }
 
     mineBlock(difficulty) { // using Proof-of-Work algorithm to secure blockchain
-        console.log(this.hash);
         while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
             this.nonce++;
             this.hash = this.calculateHash();
@@ -29,21 +35,52 @@ class Block {
 class Blockchain { // create a blockchain
     constructor() {
         this.chain = [this.createGenesisBlock()];
-        this.difficulty = 4; // our blocks will start with 4 zeros
+        this.difficulty = 2; // our blocks will start with 2 zeros
+        this.pendingTransaction = [];
+        this.miningReward = 100; // 100 coins if you successully mine a new block
     }
 
     createGenesisBlock() {
-        return new Block(0, "01/01/2017", "Genesis block", "0");
+        return new Block("01/01/2017", "Genesis block", "0");
     }
 
     getLatestBlock() {
         return this.chain[this.chain.length - 1];
     }
 
-    addBlock(newBlock) {
-        newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.mineBlock(this.difficulty);
-        this.chain.push(newBlock);
+    // add rewards for miners
+    minePendingTransactions(miningRewardAddress) {  // in reality, adding all the pending transaction to a block is impossible
+        let block = new Block(Date.now(), this.pendingTransaction);
+        block.mineBlock(this.difficulty);
+
+        console.log('Block successfully mined!');
+        this.chain.push(block);
+
+        this.pendingTransaction = [
+            new Transaction(null, miningRewardAddress, this.miningReward)
+        ];
+    }
+
+    createTransaction(transaction) {    // receive and add transaction to PendingTransactions area
+        this.pendingTransaction.push(transaction);
+    }
+
+    getBalanceOfAddress(address) {
+        let balance = 0;
+
+        for (const block of this.chain) {
+            for (const trans of block.transactions) {
+                if (trans.fromAddress == address) {
+                    balance -= trans.amount;
+                }
+
+                if (trans.toAddress == address) {
+                    balance += trans.amount;
+                }
+            }
+        }
+
+        return balance;
     }
 
     isChainValid() {
@@ -65,11 +102,24 @@ class Blockchain { // create a blockchain
 }
 
 let giangCoin = new Blockchain();
+giangCoin.createTransaction(new Transaction('address1', 'address2', 100));
+giangCoin.createTransaction(new Transaction('address2', 'address1', 20));
 
-console.log('Mining block 1...');
-giangCoin.addBlock(new Block(1, "20/07/2017", { amount: 4 }));
+console.log('\n Starting the miner...');
+giangCoin.minePendingTransactions('giang-address');
 
-console.log('Mining block 2...');
-giangCoin.addBlock(new Block(2, "20/07/2017", { amount: 8 }));
+console.log('\n Balance of giang is ', giangCoin.getBalanceOfAddress('giang-address'));
+// Balance of giang will be 0 because in mining method, after a block has been mined; 
+// we create a new transaction to give you miningReward but that one is added to the pendingTransaction array. 
+// so the miningReward will only be sent wen the next block is mined.
 
+
+
+console.log('\n Starting the miner again...');
+giangCoin.minePendingTransactions('giang-address');
+
+console.log('\n Balance of giang is ', giangCoin.getBalanceOfAddress('giang-address'));
+// Balance of giang will be 100
+// in our mining second block, we also get a new reward which is again in the pendingTransaction state 
+// and will again be included in the next block that is mined.
 
