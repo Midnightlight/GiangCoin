@@ -14,7 +14,7 @@ class Block {
         return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce).toString();
     }
 
-    mineBlock(difficulty) { // Proof-of-Work implementation
+    mineBlock(difficulty) { // using Proof-of-Work algorithm to secure blockchain
         console.log(this.hash);
         while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
             this.nonce++;
