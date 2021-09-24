@@ -1,4 +1,4 @@
-const SHA256 = require('crypto-js/sha256');  // install library in terminal: npm istall--save crypto - js
+const SHA256 = require('crypto-js/sha256');  // install library in terminal: npm istall --save crypto-js
 
 class Transaction {
     constructor(fromAddress, toAddress, amount) {
