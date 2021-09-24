@@ -14,7 +14,7 @@ class Block {
     }
 }
 
-class Blockchain {
+class Blockchain { // create a blockchain
     constructor() {
         this.chain = [this.createGenesisBlock()];
     }
@@ -58,6 +58,7 @@ giangCoin.addBlock(new Block(2, "12/07/2017", { amount: 10 }));
 console.log('Is blockchain valid? ' + giangCoin.isChainValid());
 
 giangCoin.chain[1].data = { amount: 100 };
+giangCoin.chain[1].hash = giangCoin.chain[1].calculateHash();
 
 console.log('Is blockchain valid? ' + giangCoin.isChainValid());
 
