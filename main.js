@@ -6,7 +6,7 @@ class Block {
         this.timestamp = timestamp;
         this.data = data;
         this.previousHash = previousHash;
-        this.hash = this.calculateHash;
+        this.hash = this.calculateHash();
         this.nonce = 0;
     }
 
@@ -14,10 +14,11 @@ class Block {
         return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce).toString();
     }
 
-    mineBlock(difficulty) {
+    mineBlock(difficulty) { // Proof-of-Work implementation
+        console.log(this.hash);
         while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
             this.nonce++;
-            this.hash = this.calculateHash;
+            this.hash = this.calculateHash();
         }
 
         console.log("Block mined: " + this.hash);
@@ -28,7 +29,7 @@ class Block {
 class Blockchain { // create a blockchain
     constructor() {
         this.chain = [this.createGenesisBlock()];
-        this.difficulty = 2;
+        this.difficulty = 4; // our blocks will start with 4 zeros
     }
 
     createGenesisBlock() {
@@ -64,16 +65,11 @@ class Blockchain { // create a blockchain
 }
 
 let giangCoin = new Blockchain();
-giangCoin.addBlock(new Block(1, "10/07/2017", { amount: 4 }));
-giangCoin.addBlock(new Block(2, "12/07/2017", { amount: 10 }));
+
+console.log('Mining block 1...');
+giangCoin.addBlock(new Block(1, "20/07/2017", { amount: 4 }));
+
+console.log('Mining block 2...');
+giangCoin.addBlock(new Block(2, "20/07/2017", { amount: 8 }));
 
 
-console.log('Is blockchain valid? ' + giangCoin.isChainValid());
-
-console.log('Changing a block... ')
-giangCoin.chain[1].data = { amount: 100 };
-// giangCoin.chain[1].hash = giangCoin.chain[1].calculateHash();
-
-console.log('Is blockchain valid? ' + giangCoin.isChainValid());
-
-// console.log(JSON.stringify(giangCoin, null, 4));
