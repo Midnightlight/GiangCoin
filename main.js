@@ -123,3 +123,8 @@ console.log('\n Balance of giang is ', giangCoin.getBalanceOfAddress('giang-addr
 // in our mining second block, we also get a new reward which is again in the pendingTransaction state 
 // and will again be included in the next block that is mined.
 
+/*Note: more zero in difficulty, more secure. For example:
+the probability to start with 1 zero is 0.5 (binary -> 0 and 1)
+the probability to start with 2 zeros is (0.5)^2 = 0.25
+the probability to start with 3 zeros is (0.5)^3 = 0.125
+*/
