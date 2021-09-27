@@ -15,6 +15,7 @@ giangCoin.addTransaction(tx1); // add transaction to blockchain
 console.log('\n Starting the miner...');
 giangCoin.minePendingTransactions(myWalletAddress); // use (myWalletAdrress) not someone's address like ('huy-address')
 
+
 console.log('\n Balance of giang is ', giangCoin.getBalanceOfAddress(myWalletAddress)); // not ('huy-address')
 
 console.log('Is chain valid?', giangCoin.isChainValid());
