@@ -8,6 +8,7 @@ class Transaction {
         this.toAddress = toAddress;
         this.amount = amount;
     }
+
     // check if the signature on this transaction is indeed valid
     calculateHash() { // method to return the sha 256 hash of that transaction, we will sign this hash with our private key
         return SHA256(this.fromAddress + this.toAddress + this.amount).toString();
