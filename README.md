@@ -13,4 +13,6 @@ Note: In Bitcoin's case, Proof-of-Work algorithm makes sure that there is only o
 ![Screenshot 3](https://github.com/Midnightlight/GiangCoin/raw/master/Screenshot-3.png)
 
 4. Signing transactions
-5. Angular frontend
+![Screenshot 4](https://github.com/Midnightlight/GiangCoin/raw/master/Screenshot-4.png)
+
+6. Angular frontend
